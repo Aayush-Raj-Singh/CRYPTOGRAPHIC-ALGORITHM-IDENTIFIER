@@ -1,3 +1,4 @@
+
 # 🔐 Cryptographic Algorithm Identifier
 
 An end-to-end machine learning–based system to identify cryptographic algorithms from ciphertext using statistical feature extraction and pattern recognition.  
@@ -103,3 +104,6 @@ B.Tech CSE (Cyber Security)
 
 GitHub: https://github.com/Aayush-Raj-Singh  
 LinkedIn: https://www.linkedin.com/in/aayush-raj-77a1bb237/
+=======
+# CRYPTOGRAPHIC-ALGORITHM-IDENTIFIER
+Machine learning classifier to identify cryptographic algorithms from encrypted datasets
