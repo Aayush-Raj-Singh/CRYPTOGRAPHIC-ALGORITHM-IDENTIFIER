@@ -17,3 +17,14 @@ build/
 
 # Large generated files (optional)
 data/encrypted/
+
+# Generated cryptographic datasets
+crypto-dataset/data/encrypted/
+crypto-dataset/data/plaintext/
+crypto-dataset/data/*.bin
+
+# Node
+node_modules/
+
+# Python
+__pycache__/
