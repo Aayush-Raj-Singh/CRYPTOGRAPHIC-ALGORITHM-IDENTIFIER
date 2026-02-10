@@ -32,6 +32,7 @@ def parse_args():
     parser.add_argument("--class-weight", type=str, default=None)
 
     parser.add_argument("--calibration", type=str, default="sigmoid")
+    parser.add_argument("--calibration-cv", type=int, default=3)
 
     parser.add_argument("--no-tune", action="store_true", help="Disable hyperparameter tuning.")
     parser.add_argument("--tune-iter", type=int, default=12)
@@ -95,7 +96,6 @@ def main():
             max_features=parse_max_features(args.max_features),
             class_weight=parse_class_weight(args.class_weight),
         )
-        clf.fit(X_train, y_train)
     else:
         base = RandomForestClassifier(
             random_state=args.random_state,
@@ -123,12 +123,15 @@ def main():
         clf = search.best_estimator_
         best_params = search.best_params_
 
+    X_train_full = pd.concat([X_train, X_val])
+    y_train_full = pd.concat([y_train, y_val])
+
     calibrator = CalibratedClassifierCV(
         clf,
         method=args.calibration,
-        cv="prefit",
+        cv=args.calibration_cv,
     )
-    calibrator.fit(X_val, y_val)
+    calibrator.fit(X_train_full, y_train_full)
 
     y_pred = calibrator.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
@@ -160,6 +163,7 @@ def main():
         "accuracy": accuracy,
         "random_state": args.random_state,
         "calibration": args.calibration,
+        "calibration_cv": args.calibration_cv,
         "tuning": {
             "enabled": not args.no_tune,
             "n_iter": args.tune_iter,
