@@ -1,11 +1,17 @@
 import numpy as np
 from collections import Counter
 
+
 def byte_frequency(data: bytes) -> list:
+    if not data:
+        return [0.0] * 256
     freq = Counter(data)
     return [freq.get(i, 0) / len(data) for i in range(256)]
 
+
 def chi_square_statistic(data: bytes) -> float:
+    if not data:
+        return 0.0
     expected = len(data) / 256
     freq = Counter(data)
 
@@ -16,7 +22,10 @@ def chi_square_statistic(data: bytes) -> float:
 
     return chi_sq
 
+
 def index_of_coincidence(data: bytes) -> float:
+    if not data:
+        return 0.0
     freq = Counter(data)
     n = len(data)
 

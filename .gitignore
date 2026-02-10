@@ -22,6 +22,7 @@ data/encrypted/
 crypto-dataset/data/encrypted/
 crypto-dataset/data/plaintext/
 crypto-dataset/data/*.bin
+crypto-dataset/data/features.csv
 
 # Node
 node_modules/

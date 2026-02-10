@@ -1,5 +1,6 @@
 from collections import Counter
 
+
 def block_repetition_ratio(data: bytes, block_size: int) -> float:
     if len(data) < block_size:
         return 0.0
@@ -18,10 +19,12 @@ def block_repetition_ratio(data: bytes, block_size: int) -> float:
 
     return 1 - (unique / total)
 
+
 def length_features(data: bytes) -> list:
     length = len(data)
     return [
         length,
         length % 8,
-        length % 16
+        length % 16,
+        length % 32,
     ]

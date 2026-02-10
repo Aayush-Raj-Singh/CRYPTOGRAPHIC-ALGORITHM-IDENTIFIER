@@ -37,5 +37,9 @@ async def predict(file: UploadFile = File(...)):
     if len(content) > 2 * 1024 * 1024:
         raise HTTPException(status_code=413, detail="File too large (max 2MB)")
 
-    result = predict_cipher(content)
+    try:
+        result = predict_cipher(content)
+    except ValueError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
     return result

@@ -11,6 +11,12 @@ from feature_engineering.structural import (
     block_repetition_ratio,
     length_features
 )
+from feature_engineering.advanced import (
+    compression_ratio,
+    sliding_entropy_stats,
+    hashed_bigrams
+)
+
 
 def extract_features(ciphertext: bytes) -> np.ndarray:
     features = []
@@ -24,8 +30,16 @@ def extract_features(ciphertext: bytes) -> np.ndarray:
     features.extend(length_features(ciphertext))
     features.append(block_repetition_ratio(ciphertext, 8))
     features.append(block_repetition_ratio(ciphertext, 16))
+    features.append(block_repetition_ratio(ciphertext, 32))
+
+    # Compression and local entropy
+    features.append(compression_ratio(ciphertext))
+    features.extend(sliding_entropy_stats(ciphertext, window_size=256, step=64))
 
     # Frequency distribution (256 features)
     features.extend(byte_frequency(ciphertext))
+
+    # Hashed bigrams (512 features)
+    features.extend(hashed_bigrams(ciphertext, bins=512))
 
     return np.array(features, dtype=float)

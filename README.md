@@ -22,8 +22,10 @@ This project addresses that challenge by:
 ## 🧠 Key Features
 
 - 🔍 Identifies cryptographic algorithms from encrypted files
-- 📊 Uses entropy, byte frequency, block repetition & structural features
-- 🤖 Supervised ML classifier (Random Forest)
+- 📊 Uses entropy, byte frequency, block repetition, compression ratio & structural features
+- 🧬 Adds sliding-window entropy + hashed bigrams for stronger fingerprints
+- 🤖 Calibrated Random Forest classifier with tuned hyperparameters
+- ✅ Top-2 predictions + uncertainty threshold (“Unknown” below threshold)
 - 🌐 FastAPI backend with OpenAPI documentation
 - ⚛️ React frontend for file upload and result visualization
 - 🔒 No key recovery, no decryption (ethical cryptanalysis)
@@ -37,6 +39,10 @@ This project addresses that challenge by:
 - RSA (Asymmetric)
 - RC4 (Legacy – for contrast)
 - DES / 3DES (Legacy – for contrast)
+
+**Notes**
+- AES samples include multiple modes (CBC/CTR/GCM/ECB).
+- RSA samples include key sizes 1024/2048/4096.
 
 ---
 
@@ -87,6 +93,24 @@ cd crypto-frontend
 npm install
 npm start
 ```
+
+---
+
+## 🔁 Full Pipeline (Retraining)
+
+Regenerate data, rebuild features, and retrain the calibrated model:
+
+```bash
+cd crypto-dataset
+py data/generate_dataset.py --samples-per-algo 1000 --rsa-key-sizes 1024,2048,4096
+py build_feature_dataset.py
+py model/train.py
+```
+
+Reports are saved to:
+- `crypto-dataset/reports/classification_report.txt`
+- `crypto-dataset/reports/confusion_matrix.png`
+- `crypto-dataset/reports/training_metadata.json`
 
 ---
 
